@@ -121,94 +121,107 @@ public class RegisterPage {
         assertEquals(driver.getTitle().trim(), "OpenMRS Electronic Medical Record", "TITLES DO NOT MATCH");
     }
 
-    private void fillOutPatientName() throws InterruptedException {
-        setProperties("given", faker.name().firstName());
-        firstNameInput.sendKeys(getProperties("given"));
+    private void fillOutPatientName() {
+        String givenName = faker.name().firstName();
+        firstNameInput.sendKeys(givenName);
 
-        setProperties("middle", faker.name().lastName()); // need change to middle name
-        middleNameInput.sendKeys(getProperties("middle"));
+        String middleName = faker.name().lastName();
+        middleNameInput.sendKeys(middleName);
 
-        setProperties("family name", faker.name().lastName());
-        lastNameNameInput.sendKeys(getProperties("family name"));
+        String lastName = faker.name().lastName();
+        lastNameNameInput.sendKeys(lastName);
+
+        String fullName = "Name: " + givenName +", " + middleName + ", " + lastName;
+        setProperties("Name:", fullName);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void selectGender() throws InterruptedException {
+    private void selectGender(){
         selectGender.click();
         Select select = new Select(selectGender);
-        select.selectByIndex(1);
+        select.selectByIndex(generateRandomNumber(0,1));
         String selectedGender = select.getFirstSelectedOption().getText();
-        setProperties("gender", selectedGender);
+        setProperties("Gender:", "Gender: " + selectedGender);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void fillOutPatientsBirthDate() throws InterruptedException {
-        setProperties("day",faker.date().birthday().getDate()+"");
-        birthDay.sendKeys(getProperties("day"));
+    private void fillOutPatientsBirthDate(){
+        int birthDay = faker.date().birthday().getDate();
+        this.birthDay.sendKeys(birthDay+"");
 
         Select select = new Select(birthMonthSelect);
         select.selectByIndex(generateRandomNumber(1,12));
         String selectedMonth = select.getFirstSelectedOption().getText();
-        setProperties("month", selectedMonth);
 
-        setProperties("year",generateRandomNumber(1970, 2023)+"");
-        birthYear.sendKeys(getProperties("year"));
+        int birthOfYear = generateRandomNumber(1970, 2023);
+        birthYear.sendKeys(birthOfYear+"");
+
+        String fullDOB = "Birthdate: " + birthDay + ", " + selectedMonth + ", " + birthOfYear;
+        setProperties("Birthdate:",fullDOB);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void fillOutPatientsAddress() throws InterruptedException {
-        setProperties("address1", faker.address().streetAddress());
-        address1Input.sendKeys(getProperties("address1"));
+    private void fillOutPatientsAddress() {
+        String streetAddress = faker.address().streetAddress();
+        address1Input.sendKeys(streetAddress);
 
-        setProperties("address2", faker.address().buildingNumber());
-        address2Input.sendKeys(getProperties("address2"));
+        String buildingNumber = faker.address().buildingNumber();
+        address2Input.sendKeys(buildingNumber);
 
-        setProperties("city", faker.address().city());
-        cityInput.sendKeys(getProperties("city"));
+        String city = faker.address().city();
+        cityInput.sendKeys(city);
 
         String stateAbbr = faker.address().stateAbbr();
-        setProperties("state", stateAbbr);
-        stateInput.sendKeys(getProperties("state"));
+        stateInput.sendKeys(stateAbbr);
 
-        setProperties("country", faker.address().country());
-        countryInput.sendKeys(getProperties("country"));
+        String country = faker.address().country();
+        countryInput.sendKeys(country);
 
-        setProperties("zip", faker.address().zipCodeByState(stateAbbr));
-        zipCodeInput.sendKeys(getProperties("zip"));
+        String zipCodeByState = faker.address().zipCodeByState(stateAbbr);
+        zipCodeInput.sendKeys(zipCodeByState);
 
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
-        nextBtn.click();
-    }
-
-    private void fillOutPatientPhoneNumber() throws InterruptedException {
-        setProperties("phoneNumber", faker.phoneNumber().cellPhone()+"");
-        phoneNumberInput.sendKeys(getProperties("phoneNumber"));
+        String fullAddress = "Address: " + streetAddress + ", " + buildingNumber + ", " + city + ", " + stateAbbr + ", " + country + ", " + zipCodeByState;
+        setProperties("Address:", fullAddress);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void fillOutRelatives() throws InterruptedException {
+    private void fillOutPatientPhoneNumber() {
+        String cellPhone = faker.phoneNumber().cellPhone();
+        phoneNumberInput.sendKeys(cellPhone);
+
+        setProperties("Phone Number:", "Phone Number: " + cellPhone);
+
+        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        nextBtn.click();
+    }
+
+    private void fillOutRelatives(){
         Select select = new Select(relationshipTypeSelect);
-        select.selectByIndex(generateRandomNumber(0,8));
+        select.selectByIndex(generateRandomNumber(0,7));
         String firstSelectedRelType = select.getFirstSelectedOption().getText();
-        setProperties("relationshipType", firstSelectedRelType);
 
-        setProperties("relName", faker.name().firstName());
-        relationshipPersonName.sendKeys(getProperties("relName"));
+        String relFirstName = faker.name().firstName();
+        relationshipPersonName.sendKeys(relFirstName);
+
+        String relFullInfo = "Relatives: " + relFirstName + " - " + firstSelectedRelType;
+        setProperties("Relatives:", relFullInfo);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
 
         for (int i = 0; i < confirmInfoNames.size(); i++) {
-            System.out.println(confirmInfoNames.get(i).getText());
-            System.out.println(confirmInfoValues.get(i).getText());
+            String name = confirmInfoNames.get(i).getText().trim();
+            String expectedName = getProperties(name);
+            String actualName = confirmInfoValues.get(i).getText();
+            assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
         }
     }
 
