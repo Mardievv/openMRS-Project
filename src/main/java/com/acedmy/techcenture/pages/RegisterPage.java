@@ -1,14 +1,11 @@
 package com.acedmy.techcenture.pages;
 
-import com.acedmy.techcenture.config.ConfigReader;
-import com.acedmy.techcenture.utilities.Utils;
 import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
-import org.testng.Assert;
 
 import java.util.List;
 import java.util.Locale;
@@ -134,8 +131,6 @@ public class RegisterPage {
         setProperties("family name", faker.name().lastName());
         lastNameNameInput.sendKeys(getProperties("family name"));
 
-        Thread.sleep(5000);
-
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
@@ -146,8 +141,6 @@ public class RegisterPage {
         select.selectByIndex(1);
         String selectedGender = select.getFirstSelectedOption().getText();
         setProperties("gender", selectedGender);
-
-        Thread.sleep(5000);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -164,8 +157,6 @@ public class RegisterPage {
 
         setProperties("year",generateRandomNumber(1970, 2023)+"");
         birthYear.sendKeys(getProperties("year"));
-
-        Thread.sleep(5000);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -191,8 +182,6 @@ public class RegisterPage {
         setProperties("zip", faker.address().zipCodeByState(stateAbbr));
         zipCodeInput.sendKeys(getProperties("zip"));
 
-        Thread.sleep(5000);
-
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
@@ -201,22 +190,18 @@ public class RegisterPage {
         setProperties("phoneNumber", faker.phoneNumber().cellPhone()+"");
         phoneNumberInput.sendKeys(getProperties("phoneNumber"));
 
-        Thread.sleep(5000);
-
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
     private void fillOutRelatives() throws InterruptedException {
         Select select = new Select(relationshipTypeSelect);
-        select.selectByIndex(generateRandomNumber(1,9));
+        select.selectByIndex(generateRandomNumber(0,8));
         String firstSelectedRelType = select.getFirstSelectedOption().getText();
         setProperties("relationshipType", firstSelectedRelType);
 
         setProperties("relName", faker.name().firstName());
         relationshipPersonName.sendKeys(getProperties("relName"));
-
-        Thread.sleep(5000);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -225,16 +210,6 @@ public class RegisterPage {
             System.out.println(confirmInfoNames.get(i).getText());
             System.out.println(confirmInfoValues.get(i).getText());
         }
-    }
-
-
-
-
-
-    public static void main(String[] args) {
-        Faker faker = new Faker();
-        System.out.println(faker.phoneNumber().cellPhone());
-
     }
 
 }

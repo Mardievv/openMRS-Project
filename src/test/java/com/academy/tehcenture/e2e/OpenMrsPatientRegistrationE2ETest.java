@@ -11,7 +11,6 @@ import org.testng.annotations.Test;
 
 public class OpenMrsPatientRegistrationE2ETest {
 
-
     private WebDriver driver;
 
     @BeforeMethod

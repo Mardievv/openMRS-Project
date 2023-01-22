@@ -1,6 +1,5 @@
 package com.acedmy.techcenture.pages;
 
-import com.acedmy.techcenture.utilities.Utils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,7 +16,7 @@ import static org.testng.Assert.assertTrue;
 
 public class LoginPage {
 
-    private WebDriver driver;
+    private final WebDriver driver;
 
    public LoginPage(WebDriver driver){
        this.driver = driver;
