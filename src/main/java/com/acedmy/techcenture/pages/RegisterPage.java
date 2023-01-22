@@ -18,8 +18,8 @@ import static org.testng.Assert.assertTrue;
 
 public class RegisterPage {
 
-    private WebDriver driver;
-    private Faker faker = new Faker(new Locale("en-US"));
+    private final WebDriver driver;
+    private final Faker faker = new Faker(new Locale("en-US"));
 
     public RegisterPage(WebDriver driver){
         this.driver = driver;
@@ -88,7 +88,7 @@ public class RegisterPage {
     @FindBy(xpath = "//input[@placeholder='Person Name']")
     private WebElement relationshipPersonName;
 
-    @FindBy(xpath = "//div[@id='dataCanvas']//p/span")
+    @FindBy(xpath = "//div[@id='dataCanvas']//p/span[1]")
     private List<WebElement> confirmInfoNames;
 
     @FindBy(xpath = "//div[@id='dataCanvas']//p")
@@ -113,6 +113,8 @@ public class RegisterPage {
         fillOutPatientPhoneNumber();
 
         fillOutRelatives();
+
+        clickOnSubmitButton();
     }
 
 
@@ -149,22 +151,43 @@ public class RegisterPage {
         nextBtn.click();
     }
 
-    private void fillOutPatientsBirthDate(){
-        int birthDay = faker.date().birthday().getDate();
-        this.birthDay.sendKeys(birthDay+"");
+    private void fillOutPatientsBirthDate() throws InterruptedException {
 
-        Select select = new Select(birthMonthSelect);
-        select.selectByIndex(generateRandomNumber(1,12));
-        String selectedMonth = select.getFirstSelectedOption().getText();
+        int chooseDOB = generateRandomNumber(1, 2);
 
-        int birthOfYear = generateRandomNumber(1970, 2023);
-        birthYear.sendKeys(birthOfYear+"");
+        if (chooseDOB == 1) {
+            int birthDay = faker.date().birthday().getDate();
+            this.birthDay.sendKeys(birthDay + "");
 
-        String fullDOB = "Birthdate: " + birthDay + ", " + selectedMonth + ", " + birthOfYear;
-        setProperties("Birthdate:",fullDOB);
+            Select select = new Select(birthMonthSelect);
+            select.selectByIndex(generateRandomNumber(1, 12));
+            String selectedMonth = select.getFirstSelectedOption().getText();
 
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
-        nextBtn.click();
+            int birthOfYear = generateRandomNumber(1970, 2022);
+            birthYear.sendKeys(birthOfYear + "");
+
+            String fullDOB = "Birthdate: " + birthDay + ", " + selectedMonth + ", " + birthOfYear;
+            setProperties("Birthdate:", fullDOB);
+
+            Thread.sleep(2000);
+            assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(), "NEXT BUTTON IS NOT ENABLED");
+            nextBtn.click();
+        }else {
+                int randomEstYear = generateRandomNumber(1, 119);
+                estimatedYear.sendKeys(randomEstYear+"");
+
+                int randomEstMonth = generateRandomNumber(1,11);
+                estimatedMoth.sendKeys(randomEstMonth+"");
+
+                String monthYear = "Birthdate: " + randomEstYear + " year(s), " + randomEstMonth + " month(s)";
+                setProperties("Birthdate:",monthYear);
+
+                Thread.sleep(2000);
+                assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+                nextBtn.click();
+        }
+
+
     }
 
     private void fillOutPatientsAddress() {
@@ -194,7 +217,7 @@ public class RegisterPage {
     }
 
     private void fillOutPatientPhoneNumber() {
-        String cellPhone = faker.phoneNumber().cellPhone();
+        String cellPhone = faker.phoneNumber().cellPhone().replace(".","");
         phoneNumberInput.sendKeys(cellPhone);
 
         setProperties("Phone Number:", "Phone Number: " + cellPhone);
@@ -205,7 +228,7 @@ public class RegisterPage {
 
     private void fillOutRelatives(){
         Select select = new Select(relationshipTypeSelect);
-        select.selectByIndex(generateRandomNumber(0,7));
+        select.selectByIndex(generateRandomNumber(0,9));
         String firstSelectedRelType = select.getFirstSelectedOption().getText();
 
         String relFirstName = faker.name().firstName();
@@ -222,7 +245,15 @@ public class RegisterPage {
             String expectedName = getProperties(name);
             String actualName = confirmInfoValues.get(i).getText();
             assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
+
+
         }
     }
+
+    private void clickOnSubmitButton(){
+        assertTrue(submitBtn.isEnabled() && cancelSubmissionBtn.isEnabled(),"SUBMIT OR CANCEL BUTTON IS NOT ENABLED");
+        submitBtn.click();
+    }
+
 
 }

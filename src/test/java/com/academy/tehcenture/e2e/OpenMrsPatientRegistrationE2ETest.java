@@ -18,12 +18,12 @@ public class OpenMrsPatientRegistrationE2ETest {
         driver = Driver.getDriver();
     }
 
-    @AfterMethod
-    public void tearDown() throws InterruptedException {
-        Thread.sleep(4000);
-        Driver.quiteDriver();
-
-    }
+//    @AfterMethod
+//    public void tearDown() throws InterruptedException {
+//        Thread.sleep(4000);
+//        Driver.quiteDriver();
+//
+//    }
 
 
 
@@ -44,4 +44,5 @@ public class OpenMrsPatientRegistrationE2ETest {
         registerPage.fillOutPatientInfo();
 
     }
+
 }
