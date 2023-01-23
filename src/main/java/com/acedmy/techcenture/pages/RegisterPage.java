@@ -168,10 +168,6 @@ public class RegisterPage {
 
             String fullDOB = "Birthdate: " + birthDay + ", " + selectedMonth + ", " + birthOfYear;
             setProperties("Birthdate:", fullDOB);
-
-            Thread.sleep(2000);
-            assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(), "NEXT BUTTON IS NOT ENABLED");
-            nextBtn.click();
         }else {
                 int randomEstYear = generateRandomNumber(1, 119);
                 estimatedYear.sendKeys(randomEstYear+"");
@@ -181,13 +177,9 @@ public class RegisterPage {
 
                 String monthYear = "Birthdate: " + randomEstYear + " year(s), " + randomEstMonth + " month(s)";
                 setProperties("Birthdate:",monthYear);
-
-                Thread.sleep(2000);
-                assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
-                nextBtn.click();
         }
-
-
+        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        nextBtn.click();
     }
 
     private void fillOutPatientsAddress() {
@@ -228,7 +220,7 @@ public class RegisterPage {
 
     private void fillOutRelatives(){
         Select select = new Select(relationshipTypeSelect);
-        select.selectByIndex(generateRandomNumber(0,9));
+        select.selectByIndex(generateRandomNumber(1,9));
         String firstSelectedRelType = select.getFirstSelectedOption().getText();
 
         String relFirstName = faker.name().firstName();
@@ -245,8 +237,6 @@ public class RegisterPage {
             String expectedName = getProperties(name);
             String actualName = confirmInfoValues.get(i).getText();
             assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
-
-
         }
     }
 
@@ -254,6 +244,4 @@ public class RegisterPage {
         assertTrue(submitBtn.isEnabled() && cancelSubmissionBtn.isEnabled(),"SUBMIT OR CANCEL BUTTON IS NOT ENABLED");
         submitBtn.click();
     }
-
-
 }

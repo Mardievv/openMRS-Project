@@ -17,9 +17,9 @@ public class Requirements {
             4. When you log in, verify title of page, verify you are logged in as an admin user, verify top options
             5. Verify 10 functionalities on the Home Page
             6. Click on register a patient tab
-
             7. On the registration page, verify the title and fill out the demographics, contact info, relationships sections
             8. Once you have filled out the sections, verify once again the patient information is correct before clicking the confirm button.
+
             9. You will land on the patient details page. Verify top sections like given middle and family name, gender, dob and patient id.
             10. Click on sticky note and enter a random next message and click on check
             11. Verify “Patient is successfully added” tooltip on top right.

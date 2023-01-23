@@ -3,6 +3,7 @@ package com.academy.tehcenture.e2e;
 import com.acedmy.techcenture.driver.Driver;
 import com.acedmy.techcenture.pages.HomePage;
 import com.acedmy.techcenture.pages.LoginPage;
+import com.acedmy.techcenture.pages.PatientDetailsPage;
 import com.acedmy.techcenture.pages.RegisterPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
@@ -18,12 +19,10 @@ public class OpenMrsPatientRegistrationE2ETest {
         driver = Driver.getDriver();
     }
 
-//    @AfterMethod
-//    public void tearDown() throws InterruptedException {
-//        Thread.sleep(4000);
-//        Driver.quiteDriver();
-//
-//    }
+    @AfterMethod
+    public void tearDown() throws InterruptedException {
+        Driver.quiteDriver();
+    }
 
 
 
@@ -33,6 +32,7 @@ public class OpenMrsPatientRegistrationE2ETest {
         LoginPage loginPage = new LoginPage(driver);
         HomePage homePage = new HomePage(driver);
         RegisterPage registerPage = new RegisterPage(driver);
+        PatientDetailsPage detailsPage = new PatientDetailsPage(driver);
 
         loginPage.navigateToLoginPage();
         loginPage.verifyAllLoginElements();
@@ -43,6 +43,8 @@ public class OpenMrsPatientRegistrationE2ETest {
 
         registerPage.fillOutPatientInfo();
 
+        detailsPage.stickyNoteActions();
+        detailsPage.verifyNames();
     }
 
 }
