@@ -5,8 +5,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
+
+import java.util.List;
 
 import static com.acedmy.techcenture.config.ConfigReader.getProperties;
+import static com.acedmy.techcenture.config.ConfigReader.setProperties;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
@@ -42,17 +46,39 @@ public class PatientDetailsPage {
     @FindBy(xpath = "//button[@title='Submit']")
     private WebElement submitTextarea;
 
-    public void verifyNames(){
-        String expectedFullName = getProperties("Name:");
+    @FindBy(xpath = "//div[@class='toast-container toast-position-top-right']")
+    private WebElement successMsg;
+
+    @FindBy(xpath = "//pre[@class='preformatted-note ng-binding']")
+    private WebElement preformattedNote;
+
+    @FindBy(xpath = "//*[@id=\"content\"]/div/div/div/div/div/div/h3")
+    private List<WebElement> patientFunctionality;
+
+
+
+
+    public void verifyPatientsElement(){
+        verifyNames();
+        stickyNoteActions();
+        verifyPatientFunctionality();
+    }
+
+
+    private void verifyNames(){
         String actualGivenName = givenName.getText().trim();
         String actualMiddleName = middleName.getText().trim();
         String actualLasName = familyName.getText().trim();
 
+        String patientIdText = patientId.getText();
+        setProperties("patientId", patientIdText);
+
+        String expectedFullName = getProperties("Name:");
         String actualFullName = "Name: "+actualGivenName+", "+actualMiddleName+", "+actualLasName;
         assertEquals(actualFullName, expectedFullName,"NAMES DO NOT MATCH");
     }
 
-    public void stickyNoteActions() throws InterruptedException {
+    private void stickyNoteActions(){
         assertTrue(stickyNote.isEnabled(),"STICKY NOT IS NOT ENABLED");
         stickyNote.click();
 
@@ -61,7 +87,21 @@ public class PatientDetailsPage {
 
         assertTrue(submitTextarea.isEnabled(),"SUBMIT TEXTAREA IS NOT ENABLED");
         submitTextarea.click();
+        assertTrue(successMsg.isDisplayed(),"SUCCESS MESSAGE IS NOT DISPLAYED");
+
+        assertTrue(preformattedNote.isDisplayed(),"NOTE IS DISPLAYED");
     }
 
+    private void verifyPatientFunctionality() {
+
+        String[] expectedFunctionalityList = {"diagnoses", "vitals", "latest observations", "health trend summary", "weight graph", "appointments", "recent visits", "family", "conditions", "attachments","allergies"};
+
+        for (int i = 0; i < patientFunctionality.size(); i++) {
+            String expectedFunctionality = expectedFunctionalityList[i];
+            String actualFunctionality = patientFunctionality.get(i).getText().trim().toLowerCase();
+            assertEquals(actualFunctionality,expectedFunctionality,"FUNCTIONALITY " + actualFunctionality + "FAILED");
+        }
+
+    }
 
 }

@@ -19,10 +19,10 @@ public class OpenMrsPatientRegistrationE2ETest {
         driver = Driver.getDriver();
     }
 
-    @AfterMethod
-    public void tearDown() throws InterruptedException {
-        Driver.quiteDriver();
-    }
+//    @AfterMethod
+//    public void tearDown() throws InterruptedException {
+//        Driver.quiteDriver();
+//    }
 
 
 
@@ -43,8 +43,7 @@ public class OpenMrsPatientRegistrationE2ETest {
 
         registerPage.fillOutPatientInfo();
 
-        detailsPage.stickyNoteActions();
-        detailsPage.verifyNames();
+        detailsPage.verifyPatientsElement();
     }
 
 }
