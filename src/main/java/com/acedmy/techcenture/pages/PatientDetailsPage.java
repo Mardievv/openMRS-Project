@@ -55,6 +55,9 @@ public class PatientDetailsPage {
     @FindBy(xpath = "//*[@id=\"content\"]/div/div/div/div/div/div/h3")
     private List<WebElement> patientFunctionality;
 
+    @FindBy(xpath = "//ul[@class='float-left']/li/a")
+    private List<WebElement> generalActions;
+
 
 
 
@@ -62,6 +65,7 @@ public class PatientDetailsPage {
         verifyNames();
         stickyNoteActions();
         verifyPatientFunctionality();
+        verifyGeneralActions();
     }
 
 
@@ -93,15 +97,22 @@ public class PatientDetailsPage {
     }
 
     private void verifyPatientFunctionality() {
-
         String[] expectedFunctionalityList = {"diagnoses", "vitals", "latest observations", "health trend summary", "weight graph", "appointments", "recent visits", "family", "conditions", "attachments","allergies"};
-
         for (int i = 0; i < patientFunctionality.size(); i++) {
             String expectedFunctionality = expectedFunctionalityList[i];
             String actualFunctionality = patientFunctionality.get(i).getText().trim().toLowerCase();
             assertEquals(actualFunctionality,expectedFunctionality,"FUNCTIONALITY " + actualFunctionality + "FAILED");
         }
-
+    }
+    
+    private void verifyGeneralActions(){
+        String[] expectedGeneralActions = {"Start Visit","Add Past Visit","Merge Visits","Schedule Appointment","Request Appointment","Mark Patient Deceased","Edit Registration Information","Delete Patient","Attachments"};
+        for (int i = 0; i < generalActions.size(); i++) {
+            String expectedGeneralActionsItem = expectedGeneralActions[i];
+            WebElement actualGeneralActionsItem = generalActions.get(i);
+            assertTrue(actualGeneralActionsItem.isDisplayed() && actualGeneralActionsItem.isEnabled(),"GENERAL ACTION: " + actualGeneralActionsItem + "FAILED");
+            assertEquals(actualGeneralActionsItem.getText(),expectedGeneralActionsItem,"GENERAL ACTIONS DO NOT MATCH: " + actualGeneralActionsItem);
+        }
     }
 
 }
