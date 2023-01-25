@@ -1,6 +1,5 @@
 package com.acedmy.techcenture.pages;
 
-import com.acedmy.techcenture.config.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -57,8 +56,7 @@ public class FindPatientRecordPage {
 
     }
 
-    private void verifyInfo() throws InterruptedException {
-        Thread.sleep(1000);
+    private void verifyInfo() {
         String expectedName = getProperties("Name:").replace(",", "");
         String actualName = "Name: " + patientInfo.get(1).getText();
         Assert.assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");

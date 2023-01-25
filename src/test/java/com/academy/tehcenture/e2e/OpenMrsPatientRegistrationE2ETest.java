@@ -16,10 +16,10 @@ public class OpenMrsPatientRegistrationE2ETest {
         driver = Driver.getDriver();
     }
 
-//    @AfterMethod
-//    public void tearDown() throws InterruptedException {
-//        Driver.quiteDriver();
-//    }
+    @AfterMethod
+    public void tearDown() {
+        Driver.quiteDriver();
+    }
 
 
 

@@ -101,7 +101,10 @@ public class RegisterPage {
     private WebElement submitBtn;
 
 
-    public void fillOutPatientInfo() throws InterruptedException {
+    public void fillOutPatientInfo() {
+
+        verifyTitle();
+
         fillOutPatientName();
 
         selectGender();
@@ -151,7 +154,7 @@ public class RegisterPage {
         nextBtn.click();
     }
 
-    private void fillOutPatientsBirthDate() throws InterruptedException {
+    private void fillOutPatientsBirthDate(){
 
         int rndNumber = generateRandomNumber(1, 2);
         setProperties("rndNumber", rndNumber+"");
