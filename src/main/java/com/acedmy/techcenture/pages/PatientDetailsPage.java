@@ -25,6 +25,10 @@ public class PatientDetailsPage {
         PageFactory.initElements(driver,this);
     }
 
+
+    @FindBy(xpath = "//ul[@id='breadcrumbs']//a")
+    private WebElement homeIcon;
+
     @FindBy(className = "PersonName-givenName")
     private WebElement givenName;
 
@@ -112,6 +116,7 @@ public class PatientDetailsPage {
             WebElement actualGeneralActionsItem = generalActions.get(i);
             assertTrue(actualGeneralActionsItem.isDisplayed() && actualGeneralActionsItem.isEnabled(),"GENERAL ACTION: " + actualGeneralActionsItem + "FAILED");
             assertEquals(actualGeneralActionsItem.getText(),expectedGeneralActionsItem,"GENERAL ACTIONS DO NOT MATCH: " + actualGeneralActionsItem);
+            homeIcon.click();
         }
     }
 

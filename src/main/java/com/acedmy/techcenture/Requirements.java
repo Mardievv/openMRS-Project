@@ -24,10 +24,10 @@ public class Requirements {
             11. Verify “Patient is successfully added” tooltip on top right.
             12. Verify sticky note has been created/displayed
             13. Verify diagnoses, vitalis, latest observations, health trend summary, weight graph, appointments, recent visits, family, conditions, attachments, allergies
-
             14. Verify General Actions section
             15. Go back to home page
             16. Click on Find Patient Record tab
+
             17. Verify title, and top elements on the find patient record page
             18. Search the newly created patient by its ID
             19. Verify the result shows up on the table, verify identifier information, name, gender, age and birthdate.

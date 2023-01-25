@@ -1,10 +1,7 @@
 package com.academy.tehcenture.e2e;
 
 import com.acedmy.techcenture.driver.Driver;
-import com.acedmy.techcenture.pages.HomePage;
-import com.acedmy.techcenture.pages.LoginPage;
-import com.acedmy.techcenture.pages.PatientDetailsPage;
-import com.acedmy.techcenture.pages.RegisterPage;
+import com.acedmy.techcenture.pages.*;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -33,17 +30,24 @@ public class OpenMrsPatientRegistrationE2ETest {
         HomePage homePage = new HomePage(driver);
         RegisterPage registerPage = new RegisterPage(driver);
         PatientDetailsPage detailsPage = new PatientDetailsPage(driver);
+        FindPatientRecordPage recordPage = new FindPatientRecordPage(driver);
 
         loginPage.navigateToLoginPage();
         loginPage.verifyAllLoginElements();
         loginPage.login();
 
         homePage.verifyHomeElements();
+
         homePage.clickOnPatientRegisterTab();
 
         registerPage.fillOutPatientInfo();
 
         detailsPage.verifyPatientsElement();
+
+        homePage.clickOnFindPatientRecordTab();
+
+        recordPage.findPatientActions();
+        homePage.clickOnLogoutBtn();
     }
 
 }

@@ -44,31 +44,6 @@ public class Driver {
         }else {
             throw new RuntimeException("No  driver found!!!");
         }
-
-//        switch (browser){
-//            case "chrome":
-//                WebDriverManager.chromedriver().setup();
-//                driver = new ChromeDriver();
-//                waitConfiguration();
-//                return driver;
-//            case "safari":
-//                WebDriverManager.safaridriver().setup();
-//                driver = new SafariDriver();
-//                waitConfiguration();
-//                return driver;
-//            case "firefox":
-//                WebDriverManager.firefoxdriver().setup();
-//                driver = new FirefoxDriver();
-//                waitConfiguration();
-//                return driver;
-//            case "edge":
-//                WebDriverManager.edgedriver().setup();
-//                driver = new EdgeDriver();
-//                waitConfiguration();
-//                return driver;
-//            default:
-//                throw new RuntimeException("No  driver found!!!");
-//        }
     }
 
 

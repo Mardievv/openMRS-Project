@@ -71,7 +71,7 @@ public class LoginPage {
    public void login(){
         enterUsername(getProperties("username"));
         enterPassword(getProperties("password"));
-       selectRandomLocation();
+        selectRandomLocation();
         clickOnLoginButton();
    }
 

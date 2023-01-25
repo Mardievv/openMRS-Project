@@ -61,6 +61,11 @@ public class HomePage {
         registerPatientTab.click();
     }
 
+    public void clickOnLogoutBtn(){
+        Assert.assertTrue(logoutBtn.isDisplayed() && logoutBtn.isEnabled(),"LOGOUT BUTTON IS NOT ENABLED");
+        logoutBtn.click();
+    }
+
     private void verifyTitle(){
         Assert.assertEquals(driver.getTitle(),"Home", "TITLES DO NOT MATCH");
     }

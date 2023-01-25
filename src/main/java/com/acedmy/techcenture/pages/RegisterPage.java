@@ -153,9 +153,10 @@ public class RegisterPage {
 
     private void fillOutPatientsBirthDate() throws InterruptedException {
 
-        int chooseDOB = generateRandomNumber(1, 2);
+        int rndNumber = generateRandomNumber(1, 2);
+        setProperties("rndNumber", rndNumber+"");
 
-        if (chooseDOB == 1) {
+        if (rndNumber == 1) {
             int birthDay = faker.date().birthday().getDate();
             this.birthDay.sendKeys(birthDay + "");
 
