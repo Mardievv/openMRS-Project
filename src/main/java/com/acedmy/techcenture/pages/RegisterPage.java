@@ -7,6 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -101,15 +102,15 @@ public class RegisterPage {
     private WebElement submitBtn;
 
 
-    public void fillOutPatientInfo() {
+    public void fillOutPatientInfo(HashMap<String,String> data) {
 
         verifyTitle();
 
-        fillOutPatientName();
+        fillOutPatientName(data);
 
-        selectGender();
+        selectGender(data);
 
-        fillOutPatientsBirthDate();
+        fillOutPatientsBirthDate(data);
 
         fillOutPatientsAddress();
 
@@ -126,61 +127,75 @@ public class RegisterPage {
         assertEquals(driver.getTitle().trim(), "OpenMRS Electronic Medical Record", "TITLES DO NOT MATCH");
     }
 
-    private void fillOutPatientName() {
-        String givenName = faker.name().firstName();
-        firstNameInput.sendKeys(givenName);
+    private void fillOutPatientName(HashMap<String,String> data) {
+//        String givenName = faker.name().firstName();
+//        firstNameInput.sendKeys(givenName);
 
-        String middleName = faker.name().lastName();
-        middleNameInput.sendKeys(middleName);
+        firstNameInput.sendKeys(data.get("Given"));
 
-        String lastName = faker.name().lastName();
-        lastNameNameInput.sendKeys(lastName);
 
-        String fullName = "Name: " + givenName +", " + middleName + ", " + lastName;
+//        String middleName = faker.name().lastName();
+//        middleNameInput.sendKeys(middleName);
+
+        middleNameInput.sendKeys(data.get("Middle"));
+
+//        String lastName = faker.name().lastName();
+//        lastNameNameInput.sendKeys(lastName);
+
+        lastNameNameInput.sendKeys(data.get("Family Name"));
+
+        String fullName = "Name: " + data.get("Given") +", " + data.get("Middle") + ", " + data.get("Family Name");
         setProperties("Name:", fullName);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void selectGender(){
+    private void selectGender(HashMap<String,String> data){
         selectGender.click();
         Select select = new Select(selectGender);
-        select.selectByIndex(generateRandomNumber(0,1));
-        String selectedGender = select.getFirstSelectedOption().getText();
-        setProperties("Gender:", "Gender: " + selectedGender);
+        select.selectByVisibleText(data.get("Gender"));
+//        String selectedGender = select.getFirstSelectedOption().getText();
+
+        setProperties("Gender:", "Gender: " + data.get("Gender"));
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void fillOutPatientsBirthDate(){
+    private void fillOutPatientsBirthDate(HashMap<String ,String> data){
 
         int rndNumber = generateRandomNumber(1, 2);
         setProperties("rndNumber", rndNumber+"");
+        System.out.println();
+        if (data.get("BirthType").equalsIgnoreCase("Yes")) {
+//            int birthDay = faker.date().birthday().getDate();
 
-        if (rndNumber == 1) {
-            int birthDay = faker.date().birthday().getDate();
-            this.birthDay.sendKeys(birthDay + "");
+            data.put("Day",(int)Double.parseDouble(data.get("Day"))+"");
+            birthDay.sendKeys(data.get("Day"));
 
             Select select = new Select(birthMonthSelect);
-            select.selectByIndex(generateRandomNumber(1, 12));
-            String selectedMonth = select.getFirstSelectedOption().getText();
+//            select.selectByIndex(generateRandomNumber(1, 12));
+            select.selectByVisibleText(data.get("Month"));
+//            String selectedMonth = select.getFirstSelectedOption().getText();
 
-            int birthOfYear = generateRandomNumber(1970, 2022);
-            birthYear.sendKeys(birthOfYear + "");
+//            int birthOfYear = generateRandomNumber(1970, 2022);
+            data.put("Year",(int)Double.parseDouble(data.get("Year"))+"");
+            birthYear.sendKeys(data.get("Year"));
 
-            String fullDOB = "Birthdate: " + birthDay + ", " + selectedMonth + ", " + birthOfYear;
+            String fullDOB = "Birthdate: " + data.get("Day") + ", " + data.get("Month") + ", " + data.get("Year");
             setProperties("Birthdate:", fullDOB);
         }else {
-                int randomEstYear = generateRandomNumber(1, 119);
-                estimatedYear.sendKeys(randomEstYear+"");
+//                int randomEstYear = generateRandomNumber(1, 119);
+            data.put("EstYears",(int)Double.parseDouble(data.get("EstYears"))+"");
+            estimatedYear.sendKeys(data.get("EstYears")+"");
 
-                int randomEstMonth = generateRandomNumber(1,11);
-                estimatedMoth.sendKeys(randomEstMonth+"");
+//                int randomEstMonth = generateRandomNumber(1,11);
+            data.put("EstMonth",(int)Double.parseDouble(data.get("EstMonth"))+"");
+            estimatedMoth.sendKeys(data.get("EstMonth")+"");
 
-                String monthYear = "Birthdate: " + randomEstYear + " year(s), " + randomEstMonth + " month(s)";
-                setProperties("Birthdate:",monthYear);
+            String monthYear = "Birthdate: " + data.get("EstYears") + " year(s), " + data.get("EstMonth") + " month(s)";
+            setProperties("Birthdate:",monthYear);
         }
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();

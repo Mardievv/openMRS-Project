@@ -29,7 +29,7 @@ public class FindPatientRecordPage {
     private List<WebElement> patientInfo;
 
 
-    public void findPatientActions() throws InterruptedException {
+    public void findPatientActions() {
 
         verifyTitle();
 
