@@ -4,17 +4,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.util.HashMap;
 import java.util.List;
 
-import static com.acedmy.techcenture.config.ConfigReader.getProperties;
 
 public class FindPatientRecordPage {
 
     private final WebDriver driver;
-    private SoftAssert softAssert;
+    private final SoftAssert softAssert;
 
     public FindPatientRecordPage(WebDriver driver, SoftAssert softAssert){
         this.driver = driver;
@@ -32,15 +31,15 @@ public class FindPatientRecordPage {
     private List<WebElement> patientInfo;
 
 
-    public void findPatientActions() {
+    public void findPatientActions(HashMap<String,String> data) {
 
         verifyPatientRecordTitle();
 
         verifyTopElements();
 
-        searchById();
+        searchById(data);
 
-        verifyInfo();
+        verifyInfo(data);
     }
 
     private void verifyPatientRecordTitle(){
@@ -54,18 +53,18 @@ public class FindPatientRecordPage {
         softAssert.assertTrue(searchInput.isEnabled(),"SEARCH INPUT IS NOT ENABLED");
     }
 
-    private void searchById(){
-        searchInput.sendKeys(getProperties("patientId"));
+    private void searchById(HashMap<String,String> data){
+        searchInput.sendKeys(data.get("patientId"));
 
     }
 
-    private void verifyInfo() {
-        String expectedName = getProperties("Name:").replace(",", "");
-        String actualName = "Name: " + patientInfo.get(1).getText();
+    private void verifyInfo(HashMap<String,String> data) {
+        String expectedName = data.get("Given") +" " +( data.get("Middle").isEmpty() ? "" : data.get("Middle")  + " " )+ data.get("Family Name");
+        String actualName = patientInfo.get(1).getText();
         softAssert.assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
 
-        String actualGender = "Gender: " + patientInfo.get(2).getText();
-        String expectedGender = getProperties("Gender:").substring(0, 9);
+        String actualGender = patientInfo.get(2).getText();
+        String expectedGender = data.get("Gender").substring(0,1);
         softAssert.assertEquals(actualGender,expectedGender,"GENDERS DO NOT MATCH");
 
     }

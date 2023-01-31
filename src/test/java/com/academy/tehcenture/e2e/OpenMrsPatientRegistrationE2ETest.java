@@ -29,11 +29,11 @@ public class OpenMrsPatientRegistrationE2ETest extends BaseTest {
 
         registerPage.fillOutPatientInfo(data);
 
-        detailsPage.verifyPatientsElement();
+        detailsPage.verifyPatientsElement(data);
 
         homePage.clickOnFindPatientRecordTab();
 
-        recordPage.findPatientActions();
+        recordPage.findPatientActions(data);
         homePage.clickOnLogoutBtn();
     }
 

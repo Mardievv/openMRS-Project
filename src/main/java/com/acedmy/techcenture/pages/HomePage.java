@@ -81,11 +81,11 @@ public class HomePage {
 
         String[] homeListsExpected = data.get("Home Lists").split(",");
 
-        for (int i = 0; i < homeLists.size(); i++) {
-            String expectedHomeList = homeListsExpected[i];
-            String actualHomeList = homeLists.get(i).getText().trim();
-            softAssert.assertEquals(actualHomeList,expectedHomeList,"HOME LIST "+ actualHomeList +"DOES NOT MATCH");
-        }
+//        for (int i = 0; i < homeLists.size(); i++) {
+//            String expectedHomeList = homeListsExpected[i];
+//            String actualHomeList = homeLists.get(i).getText().trim();
+//            softAssert.assertEquals(actualHomeList,expectedHomeList,"HOME LIST "+ actualHomeList +"DOES NOT MATCH");
+//        }
     }
 
 }

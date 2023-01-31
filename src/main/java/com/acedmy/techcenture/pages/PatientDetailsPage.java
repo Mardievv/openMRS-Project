@@ -1,12 +1,14 @@
 package com.acedmy.techcenture.pages;
 
 import com.github.javafaker.Faker;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.asserts.SoftAssert;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static com.acedmy.techcenture.config.ConfigReader.getProperties;
@@ -32,7 +34,7 @@ public class PatientDetailsPage {
     @FindBy(className = "PersonName-givenName")
     private WebElement givenName;
 
-    @FindBy(xpath = "//*[@id=\"content\"]/div[6]/div[1]/div/div[1]/h1/span[2]/span")
+    @FindBy(className = "PersonName-middleName")
     private WebElement middleName;
 
     @FindBy(className = "PersonName-familyName")
@@ -65,34 +67,34 @@ public class PatientDetailsPage {
 
 
 
-    public void verifyPatientsElement(){
-        verifyNames();
-        stickyNoteActions();
-        verifyPatientFunctionality();
-        verifyGeneralActions();
+    public void verifyPatientsElement(HashMap<String,String> data){
+        verifyNames(data);
+        stickyNoteActions(data);
+        verifyPatientFunctionality(data);
+        verifyGeneralActions(data);
 
     }
 
 
-    private void verifyNames(){
+    private void verifyNames(HashMap<String,String> data){
+        boolean isMiddleNameAvailable = driver.findElements(By.xpath("//span[@class='labeled']")).size() == 3;
         String actualGivenName = givenName.getText().trim();
-        String actualMiddleName = middleName.getText().trim();
+        String actualMiddleName = isMiddleNameAvailable ? middleName.getText().trim() + " " : "";
         String actualLasName = familyName.getText().trim();
 
-        String patientIdText = patientId.getText();
-        setProperties("patientId", patientIdText);
+        data.put("patientId", patientId.getText());
 
-        String expectedFullName = getProperties("Name:");
-        String actualFullName = "Name: "+actualGivenName+", "+actualMiddleName+", "+actualLasName;
+        String expectedFullName = (data.get("Given") +" " + (data.get("Middle").isEmpty() ? "" : data.get("Middle") + " ")) + data.get("Family Name");
+
+        String actualFullName = actualGivenName + " " + actualMiddleName + actualLasName;
         softAssert.assertEquals(actualFullName, expectedFullName,"NAMES DO NOT MATCH");
     }
 
-    private void stickyNoteActions(){
+    private void stickyNoteActions(HashMap<String,String > data){
         softAssert.assertTrue(stickyNote.isEnabled(),"STICKY NOT IS NOT ENABLED");
         stickyNote.click();
 
-        String funnyName = faker.funnyName().name();
-        stickyNoteTextarea.sendKeys(funnyName);
+        stickyNoteTextarea.sendKeys(data.get("StickyNote"));
 
         softAssert.assertTrue(submitTextarea.isEnabled(),"SUBMIT TEXTAREA IS NOT ENABLED");
         submitTextarea.click();
@@ -101,8 +103,8 @@ public class PatientDetailsPage {
         softAssert.assertTrue(preformattedNote.isDisplayed(),"NOTE IS DISPLAYED");
     }
 
-    private void verifyPatientFunctionality() {
-        String[] expectedFunctionalityList = {"diagnoses", "vitals", "latest observations", "health trend summary", "weight graph", "appointments", "recent visits", "family", "conditions", "attachments","allergies"};
+    private void verifyPatientFunctionality(HashMap<String,String> data) {
+        String[] expectedFunctionalityList = data.get("Functionality List").split(",");
         for (int i = 0; i < patientFunctionality.size(); i++) {
             String expectedFunctionality = expectedFunctionalityList[i];
             String actualFunctionality = patientFunctionality.get(i).getText().trim().toLowerCase();
@@ -110,8 +112,8 @@ public class PatientDetailsPage {
         }
     }
     
-    private void verifyGeneralActions(){
-        String[] expectedGeneralActions = {"Start Visit","Add Past Visit","Merge Visits","Schedule Appointment","Request Appointment","Mark Patient Deceased","Edit Registration Information","Delete Patient","Attachments"};
+    private void verifyGeneralActions(HashMap<String,String> data){
+        String[] expectedGeneralActions = data.get("General Actions").split(",");
         for (int i = 0; i < generalActions.size(); i++) {
             String expectedGeneralActionsItem = expectedGeneralActions[i];
             WebElement actualGeneralActionsItem = generalActions.get(i);
