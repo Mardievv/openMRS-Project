@@ -8,36 +8,24 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.util.HashMap;
 
-public class OpenMrsPatientRegistrationE2ETest {
-
-    private WebDriver driver;
-
-    @BeforeMethod
-    public void setUp(){
-        driver = Driver.getDriver();
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        Driver.quitDriver();
-    }
-
+public class OpenMrsPatientRegistrationE2ETest extends BaseTest {
 
 
 
     @Test(dataProvider = "patientData")
     public void login(HashMap<String,String> data) {
-        LoginPage loginPage = new LoginPage(driver);
-        HomePage homePage = new HomePage(driver);
-        RegisterPage registerPage = new RegisterPage(driver);
-        PatientDetailsPage detailsPage = new PatientDetailsPage(driver);
-        FindPatientRecordPage recordPage = new FindPatientRecordPage(driver);
+        LoginPage loginPage = new LoginPage(driver,softAssert);
+        HomePage homePage = new HomePage(driver,softAssert);
+        RegisterPage registerPage = new RegisterPage(driver,softAssert);
+        PatientDetailsPage detailsPage = new PatientDetailsPage(driver,softAssert);
+        FindPatientRecordPage recordPage = new FindPatientRecordPage(driver, softAssert);
 
         loginPage.navigateToLoginPage();
-        loginPage.verifyAllLoginElements();
+        loginPage.verifyAllLoginElements(data);
         loginPage.login();
 
         homePage.verifyHomeElements();

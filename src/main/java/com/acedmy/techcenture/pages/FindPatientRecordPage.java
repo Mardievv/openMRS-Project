@@ -2,10 +2,10 @@ package com.acedmy.techcenture.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import java.util.List;
 
@@ -14,9 +14,11 @@ import static com.acedmy.techcenture.config.ConfigReader.getProperties;
 public class FindPatientRecordPage {
 
     private final WebDriver driver;
+    private SoftAssert softAssert;
 
-    public FindPatientRecordPage(WebDriver driver){
+    public FindPatientRecordPage(WebDriver driver, SoftAssert softAssert){
         this.driver = driver;
+        this.softAssert = softAssert;
         PageFactory.initElements(driver,this);
     }
 
@@ -44,12 +46,12 @@ public class FindPatientRecordPage {
     private void verifyTitle(){
         String expectedTitle = "OpenMRS Electronic Medical Record";
         String actualTitle = driver.getTitle();
-        Assert.assertEquals(actualTitle, expectedTitle,"FIND PATIENT RECORDS TITLES DO NOT MATCH");
+        softAssert.assertEquals(actualTitle, expectedTitle,"FIND PATIENT RECORDS TITLES DO NOT MATCH");
     }
 
     private void verifyTopElements(){
-        Assert.assertTrue(findPatientText.isDisplayed(),"FIND PATIENT TEXT IS NOT DISPLAYED");
-        Assert.assertTrue(searchInput.isEnabled(),"SEARCH INPUT IS NOT ENABLED");
+        softAssert.assertTrue(findPatientText.isDisplayed(),"FIND PATIENT TEXT IS NOT DISPLAYED");
+        softAssert.assertTrue(searchInput.isEnabled(),"SEARCH INPUT IS NOT ENABLED");
     }
 
     private void searchById(){
@@ -60,16 +62,11 @@ public class FindPatientRecordPage {
     private void verifyInfo() {
         String expectedName = getProperties("Name:").replace(",", "");
         String actualName = "Name: " + patientInfo.get(1).getText();
-        Assert.assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
+        softAssert.assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
 
         String actualGender = "Gender: " + patientInfo.get(2).getText();
         String expectedGender = getProperties("Gender:").substring(0, 9);
-        Assert.assertEquals(actualGender,expectedGender,"GENDERS DO NOT MATCH");
+        softAssert.assertEquals(actualGender,expectedGender,"GENDERS DO NOT MATCH");
 
     }
-
-
-
-
-
 }

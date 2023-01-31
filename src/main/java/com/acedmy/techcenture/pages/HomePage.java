@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import java.util.List;
 import java.util.Properties;
@@ -15,10 +16,10 @@ public class HomePage {
 
     private WebDriver driver;
 
-    private Properties properties;
-
-    public HomePage(WebDriver driver){
+    private SoftAssert softAssert;
+    public HomePage(WebDriver driver,SoftAssert softAssert){
         this.driver = driver;
+        this.softAssert = softAssert;
         PageFactory.initElements(driver,this);
     }
 
@@ -43,7 +44,7 @@ public class HomePage {
 
     public void verifyHomeElements(){
 //        verify title
-        verifyTitle();
+        verifyHomePageTitle();
 //        verify user name
         verifyUserName();
 //        verify home lists
@@ -53,27 +54,27 @@ public class HomePage {
 
 
     public void clickOnFindPatientRecordTab(){
-        Assert.assertTrue(findPatientRecordTab.isDisplayed() && findPatientRecordTab.isEnabled(),"FIND PATIENT RECORD TAB IS NOT ENABLED");
+        softAssert.assertTrue(findPatientRecordTab.isDisplayed() && findPatientRecordTab.isEnabled(),"FIND PATIENT RECORD TAB IS NOT ENABLED");
         findPatientRecordTab.click();
     }
 
     public void clickOnPatientRegisterTab(){
-        Assert.assertTrue(registerPatientTab.isDisplayed() && registerPatientTab.isEnabled(),"REGISTER PATIENT TAB IS NOT ENABLED");
+        softAssert.assertTrue(registerPatientTab.isDisplayed() && registerPatientTab.isEnabled(),"REGISTER PATIENT TAB IS NOT ENABLED");
         registerPatientTab.click();
     }
 
     public void clickOnLogoutBtn(){
-        Assert.assertTrue(logoutBtn.isDisplayed() && logoutBtn.isEnabled(),"LOGOUT BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(logoutBtn.isDisplayed() && logoutBtn.isEnabled(),"LOGOUT BUTTON IS NOT ENABLED");
         logoutBtn.click();
     }
 
-    private void verifyTitle(){
+    private void verifyHomePageTitle(){
         Assert.assertEquals(driver.getTitle(),"Home", "TITLES DO NOT MATCH");
     }
 
     private void verifyUserName(){
         String actualUserName = adminText.getText().trim();
-        Assert.assertEquals(actualUserName, "admin", "USER NAME IS NOT ADMIN");
+        softAssert.assertEquals(actualUserName, "admin", "USER NAME IS NOT ADMIN");
     }
 
     private void verifyHomeLists(){
@@ -87,7 +88,7 @@ public class HomePage {
         for (int i = 0; i < homeLists.size(); i++) {
             String expectedHomeList = homeListsExpected[i];
             String actualHomeList = homeLists.get(i).getText().trim();
-            Assert.assertEquals(actualHomeList,expectedHomeList,"HOME LIST "+ actualHomeList +"DOES NOT MATCH");
+            softAssert.assertEquals(actualHomeList,expectedHomeList,"HOME LIST "+ actualHomeList +"DOES NOT MATCH");
         }
     }
 

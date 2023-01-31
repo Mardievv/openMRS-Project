@@ -5,22 +5,23 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.asserts.SoftAssert;
 
 import java.util.List;
 
 import static com.acedmy.techcenture.config.ConfigReader.getProperties;
 import static com.acedmy.techcenture.config.ConfigReader.setProperties;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class PatientDetailsPage {
 
     private final WebDriver driver;
+    private SoftAssert softAssert;
 
     private final Faker faker = new Faker();
 
-    public PatientDetailsPage(WebDriver driver){
+    public PatientDetailsPage(WebDriver driver, SoftAssert softAssert){
         this.driver = driver;
+        this.softAssert = softAssert;
         PageFactory.initElements(driver,this);
     }
 
@@ -83,21 +84,21 @@ public class PatientDetailsPage {
 
         String expectedFullName = getProperties("Name:");
         String actualFullName = "Name: "+actualGivenName+", "+actualMiddleName+", "+actualLasName;
-        assertEquals(actualFullName, expectedFullName,"NAMES DO NOT MATCH");
+        softAssert.assertEquals(actualFullName, expectedFullName,"NAMES DO NOT MATCH");
     }
 
     private void stickyNoteActions(){
-        assertTrue(stickyNote.isEnabled(),"STICKY NOT IS NOT ENABLED");
+        softAssert.assertTrue(stickyNote.isEnabled(),"STICKY NOT IS NOT ENABLED");
         stickyNote.click();
 
         String funnyName = faker.funnyName().name();
         stickyNoteTextarea.sendKeys(funnyName);
 
-        assertTrue(submitTextarea.isEnabled(),"SUBMIT TEXTAREA IS NOT ENABLED");
+        softAssert.assertTrue(submitTextarea.isEnabled(),"SUBMIT TEXTAREA IS NOT ENABLED");
         submitTextarea.click();
-        assertTrue(successMsg.isDisplayed(),"SUCCESS MESSAGE IS NOT DISPLAYED");
+        softAssert.assertTrue(successMsg.isDisplayed(),"SUCCESS MESSAGE IS NOT DISPLAYED");
 
-        assertTrue(preformattedNote.isDisplayed(),"NOTE IS DISPLAYED");
+        softAssert.assertTrue(preformattedNote.isDisplayed(),"NOTE IS DISPLAYED");
     }
 
     private void verifyPatientFunctionality() {
@@ -105,7 +106,7 @@ public class PatientDetailsPage {
         for (int i = 0; i < patientFunctionality.size(); i++) {
             String expectedFunctionality = expectedFunctionalityList[i];
             String actualFunctionality = patientFunctionality.get(i).getText().trim().toLowerCase();
-            assertEquals(actualFunctionality,expectedFunctionality,"FUNCTIONALITY " + actualFunctionality + "FAILED");
+            softAssert.assertEquals(actualFunctionality,expectedFunctionality,"FUNCTIONALITY " + actualFunctionality + "FAILED");
         }
     }
     
@@ -114,8 +115,8 @@ public class PatientDetailsPage {
         for (int i = 0; i < generalActions.size(); i++) {
             String expectedGeneralActionsItem = expectedGeneralActions[i];
             WebElement actualGeneralActionsItem = generalActions.get(i);
-            assertTrue(actualGeneralActionsItem.isDisplayed() && actualGeneralActionsItem.isEnabled(),"GENERAL ACTION: " + actualGeneralActionsItem + "FAILED");
-            assertEquals(actualGeneralActionsItem.getText(),expectedGeneralActionsItem,"GENERAL ACTIONS DO NOT MATCH: " + actualGeneralActionsItem);
+            softAssert.assertTrue(actualGeneralActionsItem.isDisplayed() && actualGeneralActionsItem.isEnabled(),"GENERAL ACTION: " + actualGeneralActionsItem + "FAILED");
+            softAssert.assertEquals(actualGeneralActionsItem.getText(),expectedGeneralActionsItem,"GENERAL ACTIONS DO NOT MATCH: " + actualGeneralActionsItem);
             homeIcon.click();
         }
     }

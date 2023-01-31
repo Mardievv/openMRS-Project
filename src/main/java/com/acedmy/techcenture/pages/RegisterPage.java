@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import org.testng.asserts.SoftAssert;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,17 +14,16 @@ import java.util.Locale;
 
 import static com.acedmy.techcenture.config.ConfigReader.getProperties;
 import static com.acedmy.techcenture.config.ConfigReader.setProperties;
-import static com.acedmy.techcenture.utilities.Utils.generateRandomNumber;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class RegisterPage {
 
     private final WebDriver driver;
+    private SoftAssert softAssert;
     private final Faker faker = new Faker(new Locale("en-US"));
 
-    public RegisterPage(WebDriver driver){
+    public RegisterPage(WebDriver driver,SoftAssert softAssert){
         this.driver = driver;
+        this.softAssert = softAssert;
         PageFactory.initElements(driver,this);
     }
 
@@ -124,7 +124,7 @@ public class RegisterPage {
 
 
     private void verifyTitle(){
-        assertEquals(driver.getTitle().trim(), "OpenMRS Electronic Medical Record", "TITLES DO NOT MATCH");
+        softAssert.assertEquals(driver.getTitle().trim(), "OpenMRS Electronic Medical Record", "TITLES DO NOT MATCH");
     }
 
     private void fillOutPatientName(HashMap<String,String> data) {
@@ -138,7 +138,7 @@ public class RegisterPage {
         String fullName = "Name: " + data.get("Given") +", " + data.get("Middle") + ", " + data.get("Family Name");
         setProperties("Name:", fullName);
 
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
@@ -149,7 +149,7 @@ public class RegisterPage {
 
         setProperties("Gender:", "Gender: " + data.get("Gender"));
 
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
@@ -178,7 +178,7 @@ public class RegisterPage {
             String monthYear = "Birthdate: " + data.get("EstYears") + " year(s), " + data.get("EstMonth") + " month(s)";
             setProperties("Birthdate:",monthYear);
         }
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
@@ -201,7 +201,7 @@ public class RegisterPage {
         String fullAddress = "Address: " + data.get("Address") + ", " + data.get("Address 2") + ", " + data.get("City/Village") + ", " + data.get("State/Province") + ", " + data.get("Country") + ", " + data.get("Postal Code");
         setProperties("Address:", fullAddress);
 
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
@@ -211,7 +211,7 @@ public class RegisterPage {
 
         setProperties("Phone Number:", "Phone Number: " + data.get("Phone Number"));
 
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
@@ -224,19 +224,19 @@ public class RegisterPage {
         String relFullInfo = "Relatives: " + data.get("Related Name") + " - " + data.get("Relationship Type");
         setProperties("Relatives:", relFullInfo);
 
-        assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
 
         for (int i = 0; i < confirmInfoNames.size(); i++) {
             String name = confirmInfoNames.get(i).getText().trim();
             String expectedName = getProperties(name);
             String actualName = confirmInfoValues.get(i).getText();
-            assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
+            softAssert.assertEquals(actualName,expectedName,"NAMES DO NOT MATCH");
         }
     }
 
     private void clickOnSubmitButton(){
-        assertTrue(submitBtn.isEnabled() && cancelSubmissionBtn.isEnabled(),"SUBMIT OR CANCEL BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(submitBtn.isEnabled() && cancelSubmissionBtn.isEnabled(),"SUBMIT OR CANCEL BUTTON IS NOT ENABLED");
         submitBtn.click();
     }
 }

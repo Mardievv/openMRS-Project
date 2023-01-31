@@ -6,20 +6,22 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
+import java.util.HashMap;
 import java.util.List;
 
 import static com.acedmy.techcenture.config.ConfigReader.getProperties;
 import static com.acedmy.techcenture.utilities.Utils.generateRandomNumber;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class LoginPage {
 
     private final WebDriver driver;
+    private SoftAssert softAssert;
 
-   public LoginPage(WebDriver driver){
+   public LoginPage(WebDriver driver, SoftAssert softAssert){
        this.driver = driver;
+       this.softAssert = softAssert;
        PageFactory.initElements(driver, this);
    }
 
@@ -48,7 +50,7 @@ public class LoginPage {
 
 
 
-    public void verifyAllLoginElements(){
+    public void verifyAllLoginElements(HashMap<String,String> data){
     //    verify inputs
         verifyLoginInputs();
     //    verify labels
@@ -56,14 +58,14 @@ public class LoginPage {
     //    verify login button and can't login link
         verifyLoginButton();
     //    verify locations
-        verifyLocations();
+        verifyLocations(data);
     }
 
 
 
    public void navigateToLoginPage(){
        driver.get(getProperties("url"));
-       assertEquals(driver.getTitle().trim(),"Login","LOGIN TITLES DO NOT MATCH");
+       softAssert.assertEquals(driver.getTitle().trim(),"Login","LOGIN TITLES DO NOT MATCH");
    }
    
 
@@ -76,24 +78,24 @@ public class LoginPage {
    }
 
     private void verifyLoginInputs(){
-       assertTrue(usernameInput.isEnabled() && passwordInput.isEnabled(),"INPUT IS NOT ENABLED");
+       softAssert.assertTrue(usernameInput.isEnabled() && passwordInput.isEnabled(),"INPUT IS NOT ENABLED");
     }
 
     private void verifyLoginLabels(){
-        assertTrue(usernameLabel.isDisplayed() && passwordLabel.isDisplayed(), "LABELS ARE NOT DISPLAYED");
+        softAssert.assertTrue(usernameLabel.isDisplayed() && passwordLabel.isDisplayed(), "LABELS ARE NOT DISPLAYED");
     }
 
     private void verifyLoginButton(){
-        assertTrue(loginBtn.isDisplayed() && loginBtn.isEnabled(), "LOGIN BUTTON IS NOT ENABLED");
-        assertTrue(cantLoginLink.isDisplayed() && cantLoginLink.isEnabled(),"CAN NOT LOGIN LINK IS NOT ENABLED");
+        softAssert.assertTrue(loginBtn.isDisplayed() && loginBtn.isEnabled(), "LOGIN BUTTON IS NOT ENABLED");
+        softAssert.assertTrue(cantLoginLink.isDisplayed() && cantLoginLink.isEnabled(),"CAN NOT LOGIN LINK IS NOT ENABLED");
     }
 
-    private void verifyLocations(){
-        String[] listOfLocations = {"inpatient ward","isolation ward","laboratory","outpatient clinic","pharmacy","registration desk"};
+    private void verifyLocations(HashMap<String,String> data){
+        String[] listOfLocations = data.get("Locations").split(",");
         for (int i = 0; i < locations.size(); i++) {
             String expectedListOfLocation = listOfLocations[i];
             String actualListOfLocation = locations.get(i).getText().toLowerCase().trim();
-            Assert.assertEquals(actualListOfLocation, expectedListOfLocation,"LOCATIONS DO NOT MATCH");
+            softAssert.assertEquals(actualListOfLocation, expectedListOfLocation,"LOCATIONS DO NOT MATCH");
         }
     }
 
@@ -115,11 +117,8 @@ public class LoginPage {
     }
 
    private void clickOnLoginButton(){
-       assertTrue(loginBtn.isDisplayed() && loginBtn.isEnabled(), "LOGIN BUTTON IS NOT ENABLED");
+       softAssert.assertTrue(loginBtn.isDisplayed() && loginBtn.isEnabled(), "LOGIN BUTTON IS NOT ENABLED");
        loginBtn.click();
    }
-
-
-
 
 }
