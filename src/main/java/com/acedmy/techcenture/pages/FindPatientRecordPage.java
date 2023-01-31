@@ -34,7 +34,7 @@ public class FindPatientRecordPage {
 
     public void findPatientActions() {
 
-        verifyTitle();
+        verifyPatientRecordTitle();
 
         verifyTopElements();
 
@@ -43,7 +43,7 @@ public class FindPatientRecordPage {
         verifyInfo();
     }
 
-    private void verifyTitle(){
+    private void verifyPatientRecordTitle(){
         String expectedTitle = "OpenMRS Electronic Medical Record";
         String actualTitle = driver.getTitle();
         softAssert.assertEquals(actualTitle, expectedTitle,"FIND PATIENT RECORDS TITLES DO NOT MATCH");

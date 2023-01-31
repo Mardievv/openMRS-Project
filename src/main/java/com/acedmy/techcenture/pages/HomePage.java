@@ -7,8 +7,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 public class HomePage {
 
@@ -42,13 +42,13 @@ public class HomePage {
 
 
 
-    public void verifyHomeElements(){
+    public void verifyHomeElements(HashMap<String,String> data){
 //        verify title
         verifyHomePageTitle();
 //        verify user name
         verifyUserName();
 //        verify home lists
-        verifyHomeLists();
+        verifyHomeLists(data);
 
     }
 
@@ -77,13 +77,9 @@ public class HomePage {
         softAssert.assertEquals(actualUserName, "admin", "USER NAME IS NOT ADMIN");
     }
 
-    private void verifyHomeLists(){
+    private void verifyHomeLists(HashMap<String,String > data){
 
-        String[] homeListsExpected = {
-                "Find Patient Record","Active Visits","Register a patient","Capture Vitals",
-                "Appointment Scheduling","Reports","Data Management",
-                "Configure Metadata","System Administration"
-        };
+        String[] homeListsExpected = data.get("Home Lists").split(",");
 
         for (int i = 0; i < homeLists.size(); i++) {
             String expectedHomeList = homeListsExpected[i];
@@ -91,9 +87,5 @@ public class HomePage {
             softAssert.assertEquals(actualHomeList,expectedHomeList,"HOME LIST "+ actualHomeList +"DOES NOT MATCH");
         }
     }
-
-
-
-
 
 }

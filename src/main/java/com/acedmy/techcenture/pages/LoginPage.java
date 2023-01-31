@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 import java.util.HashMap;
@@ -92,6 +91,7 @@ public class LoginPage {
 
     private void verifyLocations(HashMap<String,String> data){
         String[] listOfLocations = data.get("Locations").split(",");
+
         for (int i = 0; i < locations.size(); i++) {
             String expectedListOfLocation = listOfLocations[i];
             String actualListOfLocation = locations.get(i).getText().toLowerCase().trim();

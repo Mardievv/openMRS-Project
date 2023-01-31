@@ -1,14 +1,9 @@
 package com.academy.tehcenture.e2e;
 
-import com.acedmy.techcenture.driver.Driver;
 import com.acedmy.techcenture.pages.*;
 import com.acedmy.techcenture.utilities.ExcelReader;
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
 import java.util.HashMap;
 
@@ -28,7 +23,7 @@ public class OpenMrsPatientRegistrationE2ETest extends BaseTest {
         loginPage.verifyAllLoginElements(data);
         loginPage.login();
 
-        homePage.verifyHomeElements();
+        homePage.verifyHomeElements(data);
 
         homePage.clickOnPatientRegisterTab();
 

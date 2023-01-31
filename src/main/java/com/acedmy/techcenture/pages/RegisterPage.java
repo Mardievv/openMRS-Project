@@ -104,7 +104,7 @@ public class RegisterPage {
 
     public void fillOutPatientInfo(HashMap<String,String> data) {
 
-        verifyTitle();
+        verifyRegisterPageTitle();
 
         fillOutPatientName(data);
 
@@ -123,7 +123,7 @@ public class RegisterPage {
 
 
 
-    private void verifyTitle(){
+    private void verifyRegisterPageTitle(){
         softAssert.assertEquals(driver.getTitle().trim(), "OpenMRS Electronic Medical Record", "TITLES DO NOT MATCH");
     }
 
@@ -135,7 +135,7 @@ public class RegisterPage {
 
         lastNameNameInput.sendKeys(data.get("Family Name"));
 
-        String fullName = "Name: " + data.get("Given") +", " + data.get("Middle") + ", " + data.get("Family Name");
+        String fullName = "Name: " + data.get("Given") +", " +( data.get("Middle").isEmpty() ? "" : data.get("Middle")  + ", " )+ data.get("Family Name");
         setProperties("Name:", fullName);
 
         softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");

@@ -32,7 +32,7 @@ public class PatientDetailsPage {
     @FindBy(className = "PersonName-givenName")
     private WebElement givenName;
 
-    @FindBy(className = "PersonName-middleName")
+    @FindBy(xpath = "//*[@id=\"content\"]/div[6]/div[1]/div/div[1]/h1/span[2]/span")
     private WebElement middleName;
 
     @FindBy(className = "PersonName-familyName")
