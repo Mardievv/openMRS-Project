@@ -112,11 +112,11 @@ public class RegisterPage {
 
         fillOutPatientsBirthDate(data);
 
-        fillOutPatientsAddress();
+        fillOutPatientsAddress(data);
 
-        fillOutPatientPhoneNumber();
+        fillOutPatientPhoneNumber(data);
 
-        fillOutRelatives();
+        fillOutRelatives(data);
 
         clickOnSubmitButton();
     }
@@ -128,19 +128,10 @@ public class RegisterPage {
     }
 
     private void fillOutPatientName(HashMap<String,String> data) {
-//        String givenName = faker.name().firstName();
-//        firstNameInput.sendKeys(givenName);
 
         firstNameInput.sendKeys(data.get("Given"));
 
-
-//        String middleName = faker.name().lastName();
-//        middleNameInput.sendKeys(middleName);
-
         middleNameInput.sendKeys(data.get("Middle"));
-
-//        String lastName = faker.name().lastName();
-//        lastNameNameInput.sendKeys(lastName);
 
         lastNameNameInput.sendKeys(data.get("Family Name"));
 
@@ -155,7 +146,6 @@ public class RegisterPage {
         selectGender.click();
         Select select = new Select(selectGender);
         select.selectByVisibleText(data.get("Gender"));
-//        String selectedGender = select.getFirstSelectedOption().getText();
 
         setProperties("Gender:", "Gender: " + data.get("Gender"));
 
@@ -165,32 +155,23 @@ public class RegisterPage {
 
     private void fillOutPatientsBirthDate(HashMap<String ,String> data){
 
-        int rndNumber = generateRandomNumber(1, 2);
-        setProperties("rndNumber", rndNumber+"");
-        System.out.println();
         if (data.get("BirthType").equalsIgnoreCase("Yes")) {
-//            int birthDay = faker.date().birthday().getDate();
 
             data.put("Day",(int)Double.parseDouble(data.get("Day"))+"");
             birthDay.sendKeys(data.get("Day"));
 
             Select select = new Select(birthMonthSelect);
-//            select.selectByIndex(generateRandomNumber(1, 12));
             select.selectByVisibleText(data.get("Month"));
-//            String selectedMonth = select.getFirstSelectedOption().getText();
 
-//            int birthOfYear = generateRandomNumber(1970, 2022);
             data.put("Year",(int)Double.parseDouble(data.get("Year"))+"");
             birthYear.sendKeys(data.get("Year"));
 
             String fullDOB = "Birthdate: " + data.get("Day") + ", " + data.get("Month") + ", " + data.get("Year");
             setProperties("Birthdate:", fullDOB);
         }else {
-//                int randomEstYear = generateRandomNumber(1, 119);
             data.put("EstYears",(int)Double.parseDouble(data.get("EstYears"))+"");
             estimatedYear.sendKeys(data.get("EstYears")+"");
 
-//                int randomEstMonth = generateRandomNumber(1,11);
             data.put("EstMonth",(int)Double.parseDouble(data.get("EstMonth"))+"");
             estimatedMoth.sendKeys(data.get("EstMonth")+"");
 
@@ -201,51 +182,46 @@ public class RegisterPage {
         nextBtn.click();
     }
 
-    private void fillOutPatientsAddress() {
-        String streetAddress = faker.address().streetAddress();
-        address1Input.sendKeys(streetAddress);
+    private void fillOutPatientsAddress(HashMap<String ,String > data) {
+        address1Input.sendKeys(data.get("Address"));
 
-        String buildingNumber = faker.address().buildingNumber();
-        address2Input.sendKeys(buildingNumber);
 
-        String city = faker.address().city();
-        cityInput.sendKeys(city);
+        data.put("Address 2", (int)Double.parseDouble(data.get("Address 2"))+"");
+        address2Input.sendKeys(data.get("Address 2"));
 
-        String stateAbbr = faker.address().stateAbbr();
-        stateInput.sendKeys(stateAbbr);
+        cityInput.sendKeys(data.get("City/Village"));
 
-        String country = faker.address().country();
-        countryInput.sendKeys(country);
+        stateInput.sendKeys(data.get("State/Province"));
 
-        String zipCodeByState = faker.address().zipCodeByState(stateAbbr);
-        zipCodeInput.sendKeys(zipCodeByState);
+        countryInput.sendKeys(data.get("Country"));
 
-        String fullAddress = "Address: " + streetAddress + ", " + buildingNumber + ", " + city + ", " + stateAbbr + ", " + country + ", " + zipCodeByState;
+        data.put("Postal Code", (int)Double.parseDouble(data.get("Postal Code"))+"");
+        zipCodeInput.sendKeys(data.get("Postal Code"));
+
+        String fullAddress = "Address: " + data.get("Address") + ", " + data.get("Address 2") + ", " + data.get("City/Village") + ", " + data.get("State/Province") + ", " + data.get("Country") + ", " + data.get("Postal Code");
         setProperties("Address:", fullAddress);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void fillOutPatientPhoneNumber() {
-        String cellPhone = faker.phoneNumber().cellPhone().replace(".","");
-        phoneNumberInput.sendKeys(cellPhone);
+    private void fillOutPatientPhoneNumber(HashMap<String,String> data) {
+        data.put("Phone Number", (int)Double.parseDouble(data.get("Phone Number"))+"");
+        phoneNumberInput.sendKeys(data.get("Phone Number"));
 
-        setProperties("Phone Number:", "Phone Number: " + cellPhone);
+        setProperties("Phone Number:", "Phone Number: " + data.get("Phone Number"));
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
     }
 
-    private void fillOutRelatives(){
+    private void fillOutRelatives(HashMap<String, String> data){
         Select select = new Select(relationshipTypeSelect);
-        select.selectByIndex(generateRandomNumber(1,9));
-        String firstSelectedRelType = select.getFirstSelectedOption().getText();
+        select.selectByVisibleText(data.get("Relationship Type"));
 
-        String relFirstName = faker.name().firstName();
-        relationshipPersonName.sendKeys(relFirstName);
+        relationshipPersonName.sendKeys(data.get("Related Name"));
 
-        String relFullInfo = "Relatives: " + relFirstName + " - " + firstSelectedRelType;
+        String relFullInfo = "Relatives: " + data.get("Related Name") + " - " + data.get("Relationship Type");
         setProperties("Relatives:", relFullInfo);
 
         assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");

@@ -32,7 +32,7 @@ public class HomePage {
     @FindBy(xpath = "//div[@id='apps']/a")
     private List<WebElement> homeLists;
 
-    @FindBy(partialLinkText = "Find Patient Record")
+    @FindBy(xpath = "//*[@id=\"coreapps-activeVisitsHomepageLink-coreapps-activeVisitsHomepageLink-extension\"]")
     private WebElement findPatientRecordTab;
 
     @FindBy(partialLinkText = "Register a patient")
@@ -48,6 +48,7 @@ public class HomePage {
         verifyUserName();
 //        verify home lists
         verifyHomeLists();
+
     }
 
 

@@ -69,6 +69,7 @@ public class PatientDetailsPage {
         stickyNoteActions();
         verifyPatientFunctionality();
         verifyGeneralActions();
+
     }
 
 
