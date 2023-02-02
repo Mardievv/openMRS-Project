@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import static com.acedmy.techcenture.config.ConfigReader.getProperties;
-import static com.acedmy.techcenture.config.ConfigReader.setProperties;
 
 public class RegisterPage {
 
@@ -136,8 +134,6 @@ public class RegisterPage {
 
         lastNameNameInput.sendKeys(data.get("Family Name"));
 
-//        String fullName = "Name: " + data.get("Given") +", " +( data.get("Middle").isEmpty() ? "" : data.get("Middle")  + ", " )+ data.get("Family Name");
-//        setProperties("Name:", fullName);
 
         softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -148,7 +144,6 @@ public class RegisterPage {
         Select select = new Select(selectGender);
         select.selectByVisibleText(data.get("Gender"));
 
-//        setProperties("Gender:", "Gender: " + data.get("Gender"));
 
         softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -167,8 +162,6 @@ public class RegisterPage {
             data.put("Year",(int)Double.parseDouble(data.get("Year"))+"");
             birthYear.sendKeys(data.get("Year"));
 
-//            String fullDOB = "Birthdate: " + data.get("Day") + ", " + data.get("Month") + ", " + data.get("Year");
-//            setProperties("Birthdate:", fullDOB);
         }else {
             data.put("EstYears",(int)Double.parseDouble(data.get("EstYears"))+"");
             estimatedYear.sendKeys(data.get("EstYears")+"");
@@ -176,8 +169,6 @@ public class RegisterPage {
             data.put("EstMonth",(int)Double.parseDouble(data.get("EstMonth"))+"");
             estimatedMoth.sendKeys(data.get("EstMonth")+"");
 
-//            String monthYear = "Birthdate: " + data.get("EstYears") + " year(s), " + data.get("EstMonth") + " month(s)";
-//            setProperties("Birthdate:",monthYear);
         }
         softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -199,8 +190,6 @@ public class RegisterPage {
         data.put("Postal Code", (int)Double.parseDouble(data.get("Postal Code"))+"");
         zipCodeInput.sendKeys(data.get("Postal Code"));
 
-//        String fullAddress = "Address: " + data.get("Address") + ", " + data.get("Address 2") + ", " + data.get("City/Village") + ", " + data.get("State/Province") + ", " + data.get("Country") + ", " + data.get("Postal Code");
-//        setProperties("Address:", fullAddress);
 
         softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -209,8 +198,6 @@ public class RegisterPage {
     private void fillOutPatientPhoneNumber(HashMap<String,String> data) {
         data.put("Phone Number", (int)Double.parseDouble(data.get("Phone Number"))+"");
         phoneNumberInput.sendKeys(data.get("Phone Number"));
-
-//        setProperties("Phone Number:", "Phone Number: " + data.get("Phone Number"));
 
         softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();
@@ -222,8 +209,6 @@ public class RegisterPage {
 
         relationshipPersonName.sendKeys(data.get("Related Name"));
 
-//        String relFullInfo = "Relatives: " + data.get("Related Name") + " - " + data.get("Relationship Type");
-//        setProperties("Relatives:", relFullInfo);
 
         softAssert.assertTrue(nextBtn.isDisplayed() && nextBtn.isEnabled(),"NEXT BUTTON IS NOT ENABLED");
         nextBtn.click();

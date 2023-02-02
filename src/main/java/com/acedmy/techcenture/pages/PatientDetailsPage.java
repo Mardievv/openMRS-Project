@@ -11,8 +11,6 @@ import org.testng.asserts.SoftAssert;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.acedmy.techcenture.config.ConfigReader.getProperties;
-import static com.acedmy.techcenture.config.ConfigReader.setProperties;
 
 public class PatientDetailsPage {
 
